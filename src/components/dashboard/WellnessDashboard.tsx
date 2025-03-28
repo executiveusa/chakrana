@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { cn } from "../../lib/utils";
+import { motion } from "framer-motion";
 import {
   Calendar,
   Clock,
@@ -159,156 +160,277 @@ const WellnessDashboard: React.FC<WellnessDashboardProps> = ({
   completedSessions = 24,
 }) => {
   return (
-    <div className="bg-slate-50 p-6 rounded-lg w-full h-full overflow-auto">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="bg-slate-50 p-6 rounded-lg w-full h-full overflow-auto shadow-lg"
+    >
       <div className="flex flex-col gap-6">
         {/* Welcome Section */}
-        <div className="flex justify-between items-center">
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.1, duration: 0.4 }}
+          className="flex justify-between items-center"
+        >
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">
+            <h1 className="text-3xl font-bold text-slate-900 bg-gradient-to-r from-purple-600 to-green-500 bg-clip-text text-transparent">
               Welcome back, {userName}
             </h1>
             <p className="text-slate-600">
               Continue your wellness journey today
             </p>
           </div>
-          <Avatar className="h-12 w-12 border-2 border-purple-200">
-            <AvatarImage src={userAvatar} alt={userName} />
-            <AvatarFallback>{userName.charAt(0)}</AvatarFallback>
-          </Avatar>
-        </div>
+          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+            <Avatar className="h-12 w-12 border-2 border-purple-200 shadow-md">
+              <AvatarImage src={userAvatar} alt={userName} />
+              <AvatarFallback>{userName.charAt(0)}</AvatarFallback>
+            </Avatar>
+          </motion.div>
+        </motion.div>
 
         {/* Stats Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="bg-purple-100 p-3 rounded-full">
-                  <Calendar className="h-6 w-6 text-purple-600" />
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-4"
+        >
+          <motion.div
+            whileHover={{ y: -5 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <Card className="shadow-md hover:shadow-xl transition-shadow duration-300">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4">
+                  <motion.div
+                    whileHover={{ rotate: 15 }}
+                    className="bg-purple-100 p-3 rounded-full shadow-inner"
+                  >
+                    <Calendar className="h-6 w-6 text-purple-600" />
+                  </motion.div>
+                  <div>
+                    <p className="text-sm text-slate-600">Current Streak</p>
+                    <h3 className="text-2xl font-bold">{streakDays} days</h3>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm text-slate-600">Current Streak</p>
-                  <h3 className="text-2xl font-bold">{streakDays} days</h3>
+              </CardContent>
+            </Card>
+          </motion.div>
+          <motion.div
+            whileHover={{ y: -5 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <Card className="shadow-md hover:shadow-xl transition-shadow duration-300">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4">
+                  <motion.div
+                    whileHover={{ rotate: 15 }}
+                    className="bg-green-100 p-3 rounded-full shadow-inner"
+                  >
+                    <Clock className="h-6 w-6 text-green-600" />
+                  </motion.div>
+                  <div>
+                    <p className="text-sm text-slate-600">Total Meditation</p>
+                    <h3 className="text-2xl font-bold">
+                      {totalMinutes} minutes
+                    </h3>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="bg-green-100 p-3 rounded-full">
-                  <Clock className="h-6 w-6 text-green-600" />
+              </CardContent>
+            </Card>
+          </motion.div>
+          <motion.div
+            whileHover={{ y: -5 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <Card className="shadow-md hover:shadow-xl transition-shadow duration-300">
+              <CardContent className="pt-6">
+                <div className="flex items-center gap-4">
+                  <motion.div
+                    whileHover={{ rotate: 15 }}
+                    className="bg-blue-100 p-3 rounded-full shadow-inner"
+                  >
+                    <Heart className="h-6 w-6 text-blue-600" />
+                  </motion.div>
+                  <div>
+                    <p className="text-sm text-slate-600">Sessions Completed</p>
+                    <h3 className="text-2xl font-bold">{completedSessions}</h3>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm text-slate-600">Total Meditation</p>
-                  <h3 className="text-2xl font-bold">{totalMinutes} minutes</h3>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <div className="bg-blue-100 p-3 rounded-full">
-                  <Heart className="h-6 w-6 text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-slate-600">Sessions Completed</p>
-                  <h3 className="text-2xl font-bold">{completedSessions}</h3>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </motion.div>
 
         {/* Chakra Visualization */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Your Chakra Balance</CardTitle>
-            <CardDescription>
-              Track your progress across all energy centers
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {chakras.map((chakra) => (
-                <div key={chakra.name} className="space-y-1">
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                      <div
-                        className={cn("w-3 h-3 rounded-full", chakra.color)}
-                      />
-                      <span className="font-medium">{chakra.name} Chakra</span>
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.4 }}
+        >
+          <Card className="shadow-lg hover:shadow-xl transition-all duration-300">
+            <CardHeader>
+              <CardTitle className="text-purple-700">
+                Your Chakra Balance
+              </CardTitle>
+              <CardDescription>
+                Track your progress across all energy centers
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {chakras.map((chakra, index) => (
+                  <motion.div
+                    key={chakra.name}
+                    className="space-y-1"
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.1 * index, duration: 0.3 }}
+                  >
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <motion.div
+                          whileHover={{ scale: 1.5 }}
+                          className={cn(
+                            "w-3 h-3 rounded-full shadow-md",
+                            chakra.color,
+                          )}
+                        />
+                        <span className="font-medium">
+                          {chakra.name} Chakra
+                        </span>
+                      </div>
+                      <span className="text-sm text-slate-500">
+                        {chakra.progress}%
+                      </span>
                     </div>
-                    <span className="text-sm text-slate-500">
-                      {chakra.progress}%
-                    </span>
-                  </div>
-                  <Progress value={chakra.progress} className="h-2" />
-                  <p className="text-xs text-slate-500">{chakra.description}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-6 flex justify-center">
-              <Button className="bg-purple-600 hover:bg-purple-700">
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Start Chakra Assessment
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+                    <Progress value={chakra.progress} className="h-2" />
+                    <p className="text-xs text-slate-500">
+                      {chakra.description}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+              <div className="mt-6 flex justify-center">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Button className="bg-purple-600 hover:bg-purple-700 shadow-md hover:shadow-lg transition-all">
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    Start Chakra Assessment
+                  </Button>
+                </motion.div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
 
         {/* Meditation Sessions */}
-        <Tabs defaultValue="recommended" className="w-full">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold">Meditation Sessions</h2>
-            <TabsList>
-              <TabsTrigger value="recommended">Recommended</TabsTrigger>
-              <TabsTrigger value="popular">Popular</TabsTrigger>
-            </TabsList>
-          </div>
-
-          <TabsContent value="recommended" className="space-y-0">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {recommendedSessions.map((session) => (
-                <MeditationCard key={session.id} session={session} />
-              ))}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.4 }}
+        >
+          <Tabs defaultValue="recommended" className="w-full">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-green-500 bg-clip-text text-transparent">
+                Meditation Sessions
+              </h2>
+              <TabsList className="shadow-md">
+                <TabsTrigger value="recommended">Recommended</TabsTrigger>
+                <TabsTrigger value="popular">Popular</TabsTrigger>
+              </TabsList>
             </div>
-          </TabsContent>
 
-          <TabsContent value="popular" className="space-y-0">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {popularSessions.map((session) => (
-                <MeditationCard key={session.id} session={session} />
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
+            <TabsContent value="recommended" className="space-y-0">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {recommendedSessions.map((session, index) => (
+                  <motion.div
+                    key={session.id}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.1 * index, duration: 0.3 }}
+                  >
+                    <MeditationCard session={session} />
+                  </motion.div>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="popular" className="space-y-0">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {popularSessions.map((session, index) => (
+                  <motion.div
+                    key={session.id}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.1 * index, duration: 0.3 }}
+                  >
+                    <MeditationCard session={session} />
+                  </motion.div>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+        </motion.div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <QuickActionCard
-            icon={<PlayCircle className="h-6 w-6 text-purple-600" />}
-            title="Quick Meditation"
-            description="5-minute session"
-          />
-          <QuickActionCard
-            icon={<User className="h-6 w-6 text-green-600" />}
-            title="My Profile"
-            description="View your progress"
-          />
-          <QuickActionCard
-            icon={<Calendar className="h-6 w-6 text-blue-600" />}
-            title="Schedule Session"
-            description="Plan your practice"
-          />
-          <QuickActionCard
-            icon={<Settings className="h-6 w-6 text-slate-600" />}
-            title="Settings"
-            description="Customize your experience"
-          />
-        </div>
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-4 gap-4"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.4 }}
+        >
+          <motion.div
+            whileHover={{ y: -5 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <QuickActionCard
+              icon={<PlayCircle className="h-6 w-6 text-purple-600" />}
+              title="Quick Meditation"
+              description="5-minute session"
+              href="/meditations/quick"
+            />
+          </motion.div>
+          <motion.div
+            whileHover={{ y: -5 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <QuickActionCard
+              icon={<User className="h-6 w-6 text-green-600" />}
+              title="My Profile"
+              description="View your progress"
+              href="/profile"
+            />
+          </motion.div>
+          <motion.div
+            whileHover={{ y: -5 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <QuickActionCard
+              icon={<Calendar className="h-6 w-6 text-blue-600" />}
+              title="Schedule Session"
+              description="Plan your practice"
+              href="/schedule"
+            />
+          </motion.div>
+          <motion.div
+            whileHover={{ y: -5 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <QuickActionCard
+              icon={<Settings className="h-6 w-6 text-slate-600" />}
+              title="Settings"
+              description="Customize your experience"
+              href="/settings"
+            />
+          </motion.div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -318,23 +440,23 @@ interface MeditationCardProps {
 
 const MeditationCard: React.FC<MeditationCardProps> = ({ session }) => {
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
       <div className="relative h-40">
         <img
           src={session.image}
           alt={session.title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
         />
         <Badge
           className={cn(
             "absolute top-2 right-2",
             session.chakraColor,
-            "text-white border-none",
+            "text-white border-none shadow-md",
           )}
         >
           {session.chakra} Chakra
         </Badge>
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
           <h3 className="text-white font-medium">{session.title}</h3>
         </div>
       </div>
@@ -344,10 +466,18 @@ const MeditationCard: React.FC<MeditationCardProps> = ({ session }) => {
             <Clock className="h-4 w-4 text-slate-500" />
             <span className="text-sm text-slate-500">{session.duration}</span>
           </div>
-          <Button size="sm" className="bg-purple-600 hover:bg-purple-700">
-            <PlayCircle className="mr-1 h-4 w-4" />
-            Play
-          </Button>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              size="sm"
+              className="bg-purple-600 hover:bg-purple-700 shadow-md hover:shadow-lg transition-all"
+              onClick={() =>
+                (window.location.href = `/meditation/${session.id}`)
+              }
+            >
+              <PlayCircle className="mr-1 h-4 w-4" />
+              Play
+            </Button>
+          </motion.div>
         </div>
       </CardContent>
     </Card>
@@ -358,17 +488,31 @@ interface QuickActionCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
+  href?: string;
 }
 
 const QuickActionCard: React.FC<QuickActionCardProps> = ({
   icon,
   title,
   description,
+  href = "/",
 }) => {
+  const handleClick = () => {
+    window.location.href = href;
+  };
+
   return (
-    <Card className="hover:shadow-md transition-shadow cursor-pointer">
+    <Card
+      className="shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer"
+      onClick={handleClick}
+    >
       <CardContent className="p-4 flex items-center gap-4">
-        <div className="bg-slate-100 p-3 rounded-full">{icon}</div>
+        <motion.div
+          whileHover={{ rotate: 15 }}
+          className="bg-slate-100 p-3 rounded-full shadow-inner"
+        >
+          {icon}
+        </motion.div>
         <div>
           <h3 className="font-medium">{title}</h3>
           <p className="text-sm text-slate-500">{description}</p>

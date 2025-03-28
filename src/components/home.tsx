@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Header from "./layout/Header";
 import WellnessDashboard from "./dashboard/WellnessDashboard";
+import { motion } from "framer-motion";
 
 interface HomeProps {
   userName?: string;
@@ -19,15 +20,32 @@ const Home: React.FC<HomeProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-green-50 flex flex-col">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen bg-gradient-to-b from-purple-50 to-green-50 flex flex-col"
+    >
       <Header
         userName={userName}
         userAvatar={userAvatar}
         onMenuToggle={handleMenuToggle}
       />
 
-      <main className="flex-1 container mx-auto px-4 py-6 md:px-6 md:py-8 max-w-7xl">
-        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <motion.main
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.4 }}
+        className="flex-1 container mx-auto px-4 py-6 md:px-6 md:py-8 max-w-7xl"
+      >
+        <motion.div
+          whileHover={{
+            boxShadow:
+              "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+          }}
+          transition={{ duration: 0.3 }}
+          className="bg-white rounded-xl shadow-lg overflow-hidden"
+        >
           {/* Mobile menu drawer - only visible on mobile */}
           {isMobileMenuOpen && (
             <div
@@ -59,20 +77,28 @@ const Home: React.FC<HomeProps> = ({
               completedSessions={24}
             />
           </div>
-        </div>
-      </main>
+        </motion.div>
+      </motion.main>
 
-      <footer className="bg-white border-t border-gray-200 py-6">
+      <motion.footer
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.4, duration: 0.4 }}
+        className="bg-white border-t border-gray-200 py-6 shadow-md"
+      >
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center gap-2 mb-4 md:mb-0">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-green-400 flex items-center justify-center">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="flex items-center gap-2 mb-4 md:mb-0"
+            >
+              <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-green-400 flex items-center justify-center shadow-md">
                 <span className="text-white font-bold text-sm">C</span>
               </div>
               <span className="text-lg font-semibold text-gray-800">
                 Chakrana
               </span>
-            </div>
+            </motion.div>
 
             <div className="text-sm text-gray-500">
               © {new Date().getFullYear()} Chakrana Wellness. All rights
@@ -80,20 +106,32 @@ const Home: React.FC<HomeProps> = ({
             </div>
 
             <div className="flex gap-4 mt-4 md:mt-0">
-              <a href="#" className="text-gray-500 hover:text-purple-600">
+              <motion.a
+                whileHover={{ scale: 1.1, y: -2 }}
+                href="/privacy"
+                className="text-gray-500 hover:text-purple-600 transition-colors"
+              >
                 Privacy
-              </a>
-              <a href="#" className="text-gray-500 hover:text-purple-600">
+              </motion.a>
+              <motion.a
+                whileHover={{ scale: 1.1, y: -2 }}
+                href="/terms"
+                className="text-gray-500 hover:text-purple-600 transition-colors"
+              >
                 Terms
-              </a>
-              <a href="#" className="text-gray-500 hover:text-purple-600">
+              </motion.a>
+              <motion.a
+                whileHover={{ scale: 1.1, y: -2 }}
+                href="/contact"
+                className="text-gray-500 hover:text-purple-600 transition-colors"
+              >
                 Contact
-              </a>
+              </motion.a>
             </div>
           </div>
         </div>
-      </footer>
-    </div>
+      </motion.footer>
+    </motion.div>
   );
 };
 
@@ -109,12 +147,14 @@ const NavItem: React.FC<NavItemProps> = ({
   active = false,
 }) => {
   return (
-    <a
+    <motion.a
+      whileHover={{ scale: 1.05, y: -2 }}
+      whileTap={{ scale: 0.95 }}
       href={href}
-      className={`block px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-purple-100 hover:text-purple-600 ${active ? "bg-purple-100 text-purple-600" : "text-gray-700"}`}
+      className={`block px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-purple-100 hover:text-purple-600 shadow-sm hover:shadow-md ${active ? "bg-purple-100 text-purple-600" : "text-gray-700"}`}
     >
       {label}
-    </a>
+    </motion.a>
   );
 };
 
