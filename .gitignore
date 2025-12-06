@@ -32,3 +32,16 @@ core
 
 .github/
 
+# Environment files with secrets
+.env
+.env.local
+.env.production
+.env.staging
+.env.test
+
+# Backend specific
+backend/medusa/node_modules
+backend/medusa/dist
+backend/medusa/.cache
+backend/medusa/uploads
+

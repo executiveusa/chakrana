@@ -1,10 +1,31 @@
-import { Suspense, lazy } from "react";
-import { useRoutes, Routes, Route } from "react-router-dom";
+import { Suspense, lazy, useCallback } from "react";
+import { useRoutes, Routes, Route, useNavigate } from "react-router-dom";
 import Home from "./components/home";
 import routes from "tempo-routes";
 import { motion, AnimatePresence, MotionConfig } from "framer-motion";
+import { AvatarChatWidget } from "./components/avatar";
+import type { SuggestedAction } from "./types/medusa";
 
 function App() {
+  const navigate = useNavigate();
+
+  // Handle suggested actions from the avatar chat using React Router
+  const handleSuggestedAction = useCallback((action: SuggestedAction) => {
+    switch (action.type) {
+      case "go_to_checkout":
+        navigate("/checkout");
+        break;
+      case "show_product":
+        navigate(`/store/${(action.payload as Record<string, unknown>).category || ""}`);
+        break;
+      case "show_blog_post":
+        navigate(`/blog/${(action.payload as Record<string, unknown>).slug || ""}`);
+        break;
+      default:
+        break;
+    }
+  }, [navigate]);
+
   return (
     <MotionConfig>
       <Suspense
@@ -32,6 +53,15 @@ function App() {
           )}
         </Routes>
         {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
+        
+        {/* Autonomous Sales Avatar Chat Widget */}
+        <AvatarChatWidget
+          avatarName="Chakrana Guide"
+          avatarImage="https://api.dicebear.com/7.x/bottts/svg?seed=chakrana&backgroundColor=c084fc"
+          initialMessage="Hi! 🌟 I'm your Chakrana wellness guide. I can help you discover chakra healing products, meditation tools, and wellness resources. What brings you here today?"
+          position="bottom-right"
+          onSuggestedAction={handleSuggestedAction}
+        />
       </Suspense>
     </MotionConfig>
   );
