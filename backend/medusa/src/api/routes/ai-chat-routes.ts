@@ -103,10 +103,12 @@ export function aiChatRoutes(router: Router): Router {
         suggested_actions: response.suggested_actions,
       });
     } catch (error) {
+      // Log error details server-side for debugging
       console.error("AI Chat error:", error);
+      
+      // Return sanitized error response - never expose internal error details
       res.status(500).json({
-        message: "Failed to process chat message",
-        error: process.env.NODE_ENV === "development" ? String(error) : undefined,
+        message: "Failed to process chat message. Please try again.",
       });
     }
   });

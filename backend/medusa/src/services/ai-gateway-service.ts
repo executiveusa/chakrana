@@ -357,10 +357,12 @@ class AIGatewayService extends TransactionBaseService {
   }
 
   /**
-   * Generate a unique conversation ID
+   * Generate a unique conversation ID using crypto
    */
   private generateConversationId(): string {
-    return `conv_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    // Use Node.js crypto for more robust UUID generation
+    const crypto = require("crypto");
+    return `conv_${crypto.randomUUID()}`;
   }
 }
 

@@ -43,10 +43,15 @@ function getDeviceType(): DeviceType {
 }
 
 /**
- * Generate a unique message ID
+ * Generate a unique message ID using crypto if available
  */
 function generateMessageId(): string {
-  return `msg_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+  // Use crypto.randomUUID if available (modern browsers)
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
+    return `msg_${crypto.randomUUID()}`;
+  }
+  // Fallback for older browsers - combine timestamp with random values
+  return `msg_${Date.now()}_${Math.random().toString(36).substring(2, 9)}_${Math.random().toString(36).substring(2, 9)}`;
 }
 
 /**

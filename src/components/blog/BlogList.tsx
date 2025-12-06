@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Loader2, BookOpen, Search } from "lucide-react";
 import { Input } from "../ui/input";
@@ -24,6 +25,7 @@ const BlogList: React.FC<BlogListProps> = ({
   showTags = true,
   onPostClick,
 }) => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [tags, setTags] = useState<BlogTag[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -71,14 +73,14 @@ const BlogList: React.FC<BlogListProps> = ({
     setSelectedTag(selectedTag === tagSlug ? null : tagSlug);
   };
 
-  const handlePostClick = (slug: string) => {
+  const handlePostClick = useCallback((slug: string) => {
     if (onPostClick) {
       onPostClick(slug);
     } else {
-      // Default behavior: navigate to blog post
-      window.location.href = `/blog/${slug}`;
+      // Default behavior: navigate to blog post using React Router
+      navigate(`/blog/${slug}`);
     }
-  };
+  }, [onPostClick, navigate]);
 
   return (
     <div className={cn("w-full", className)}>

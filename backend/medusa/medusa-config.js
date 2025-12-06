@@ -35,9 +35,13 @@ const DATABASE_URL =
 // Redis
 const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
 
-// JWT secrets
-const JWT_SECRET = process.env.JWT_SECRET || "supersecret-chakrana-jwt";
-const COOKIE_SECRET = process.env.COOKIE_SECRET || "supersecret-chakrana-cookie";
+// JWT secrets - require in production
+const isProduction = process.env.NODE_ENV === "production";
+if (isProduction && (!process.env.JWT_SECRET || !process.env.COOKIE_SECRET)) {
+  throw new Error("JWT_SECRET and COOKIE_SECRET must be set in production environment");
+}
+const JWT_SECRET = process.env.JWT_SECRET || "supersecret-chakrana-jwt-dev-only";
+const COOKIE_SECRET = process.env.COOKIE_SECRET || "supersecret-chakrana-cookie-dev-only";
 
 // Avatar AI gateway configuration
 const AI_GATEWAY_URL = process.env.AI_GATEWAY_URL || "http://localhost:3100";
